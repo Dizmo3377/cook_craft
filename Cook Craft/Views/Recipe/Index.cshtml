@@ -1,6 +1,106 @@
-﻿@page
-@model Cook_Craft.Views.Recipe.IndexModel
+﻿@using Cook_Craft.View_Models
+@model CreateRecipeViewModel
 @{
+    ViewData["Title"] = "Create Recipe";
 }
 
-<h1>Test</h1>
+<h1>Create a New Recipe</h1>
+
+<form asp-action="Index" asp-controller="Recipe" method="post" enctype="multipart/form-data">
+    <input type="hidden" id="AppUserId" name="AppUserId" asp-for="AppUserId"/>
+    <div class="form-group">
+        <label asp-for="Name">Recipe Name:</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description">Description:</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PrepTime">Preparation Time:</label>
+        <input asp-for="PrepTime" class="form-control" />
+        <span asp-validation-for="PrepTime" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CookTime">Cooking Time:</label>
+        <input asp-for="CookTime" class="form-control" />
+        <span asp-validation-for="CookTime" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Image">Image:</label>
+        <input asp-for="Image" type="file" class="form-control-file" />
+        <span asp-validation-for="Image" class="text-danger"></span>
+    </div>
+
+    <!-- Steps -->
+    <div class="form-group">
+        <label>Steps:</label>
+        <button type="button" class="btn btn-sm btn-primary" onclick="addStep()">Add Step</button>
+        <div id="stepsContainer">
+            @if (Model.Steps != null)
+            {
+                for (var i = 0; i < Model.Steps.Count; i++)
+                {
+                    <input asp-for="Steps[i]" class="form-control" />
+                    <span asp-validation-for="Steps[i]" class="text-danger"></span>
+                }
+            }
+            else
+            {
+                <input asp-for="Steps" class="form-control" />
+            }
+        </div>
+    </div>
+
+    <!-- Ingredients -->
+    <div class="form-group">
+        <label>Ingredients:</label>
+        <button type="button" class="btn btn-sm btn-primary" onclick="addIngredient()">Add Ingredient</button>
+        <div id="ingredientsContainer">
+            @if (Model.Ingridients != null)
+            {
+                for (var i = 0; i < Model.Ingridients.Count; i++)
+                {
+                    <input asp-for="Ingridients[i]" class="form-control" />
+                    <span asp-validation-for="Ingridients[i]" class="text-danger"></span>
+                }
+            }
+            else
+            {
+                <input asp-for="Ingridients" class="form-control" />
+            }
+        </div>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Create Recipe</button>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        function addStep() {
+            const container = document.getElementById('stepsContainer');
+            const input = document.createElement('input');
+            input.className = 'form-control';
+            input.name = 'Steps';
+            input.setAttribute('asp-for', `Steps[${container.children.length}]`);
+            container.appendChild(input);
+        }
+
+        function addIngredient() {
+            const container = document.getElementById('ingredientsContainer');
+            const input = document.createElement('input');
+            input.className = 'form-control';
+            input.name = 'Ingredients';
+            input.setAttribute('asp-for', `Ingredients[${container.children.length}]`);
+            container.appendChild(input);
+        }
+    </script>
+}

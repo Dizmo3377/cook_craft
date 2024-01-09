@@ -13,4 +13,8 @@ public class Recipe
     public int Rating { get; set;}
     public ICollection<Step> Steps { get; set; }
     public ICollection<Ingridient> Ingridients { get; set; }
+
+    [ForeignKey("AppUser")]
+    public string? AppUserId { get; set; }
+    public AppUser? AppUser { get; set; }
 }

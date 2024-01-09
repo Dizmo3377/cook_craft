@@ -1,4 +1,6 @@
-﻿namespace Cook_Craft.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Cook_Craft.Models;
 
 public class Step
 {
