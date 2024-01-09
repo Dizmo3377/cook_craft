@@ -1,0 +1,49 @@
+﻿@model ICollection<Recipe>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kitchen</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Download Logs</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var recipe in Model)
+            {
+                <tr>
+                    <td><img src="@recipe.Image" alt="Image"/></td>
+                    <td>@recipe.Name</td>
+                    <td>@recipe.Description</td>
+                    @{var totalTime = recipe.CookTime + @recipe.PrepTime;}
+                    <td>@totalTime</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>
