@@ -63,5 +63,15 @@ namespace Cook_Craft.Controllers
             _recipeRepository.Create(recipe);
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Show(int id)
+        {
+            var recipe = await _recipeRepository.GetRecipeAsync(id);
+
+            if (recipe == null) return NotFound();
+
+            return View(recipe);
+        }
     }
 }

@@ -37,7 +37,15 @@
             {
                 <tr>
                     <td><img src="@recipe.Image" alt="Image"/></td>
-                    <td>@recipe.Name</td>
+                    <td>
+                        <a 
+                            asp-controller="Recipe"
+                            asp-action="Show" 
+                            asp-route-id="@recipe.Id" 
+                            class="btn btn-sm btn-outline-secondary">
+                            @recipe.Name
+                        </a>
+                    </td>
                     <td>@recipe.Description</td>
                     @{var totalTime = recipe.CookTime + @recipe.PrepTime;}
                     <td>@totalTime</td>

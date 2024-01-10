@@ -1,6 +1,7 @@
 ﻿using Cook_Craft.Data;
 using Cook_Craft.Interfaces;
 using Cook_Craft.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cook_Craft.Repositories;
 
@@ -35,5 +36,13 @@ public class RecipeRepository : IRecipeRepository
     {
         int saved = _context.SaveChanges();
         return saved > 0;
+    }
+
+    public async Task<Recipe> GetRecipeAsync(int id)
+    {
+        return await _context.Recipes
+            .Include(r => r.Steps)
+            .Include(r => r.Ingridients)
+            .FirstOrDefaultAsync(r => r.Id == id);
     }
 }
