@@ -1,6 +1,8 @@
-﻿namespace Cook_Craft.Data;
+﻿using Microsoft.AspNetCore.Identity;
 
-public static class UserRoles
+namespace Cook_Craft.Data;
+
+public class UserRoles : IdentityRole
 {
     public const string Admin = "admin";
     public const string User = "user";

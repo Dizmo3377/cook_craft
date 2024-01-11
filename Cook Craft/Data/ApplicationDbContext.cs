@@ -4,14 +4,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Cook_Craft.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<AppUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
-
-        public DbSet<AppUser> Users { get; set; }
         public DbSet<Recipe> Recipes { get; set; }
         public DbSet<Step> Steps { get; set; }
         public DbSet<Ingridient> Ingridients { get; set; }

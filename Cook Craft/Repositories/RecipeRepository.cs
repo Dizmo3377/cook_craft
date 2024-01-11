@@ -2,16 +2,19 @@
 using Cook_Craft.Interfaces;
 using Cook_Craft.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace Cook_Craft.Repositories;
 
 public class RecipeRepository : IRecipeRepository
 {
     private readonly ApplicationDbContext _context;
+    private readonly IUserRepository _userManager;
 
-    public RecipeRepository(ApplicationDbContext context)
+    public RecipeRepository(ApplicationDbContext context, IUserRepository userRepository)
     {
         _context = context;
+        _userManager = userRepository;
     }
 
     public bool Create(Recipe recipe)
@@ -40,9 +43,17 @@ public class RecipeRepository : IRecipeRepository
 
     public async Task<Recipe> GetRecipeAsync(int id)
     {
-        return await _context.Recipes
+        var recipe = await _context.Recipes
             .Include(r => r.Steps)
             .Include(r => r.Ingridients)
+            .Include(r => r.AppUser)
             .FirstOrDefaultAsync(r => r.Id == id);
+
+        if (recipe != null)
+        {
+            recipe.AppUser = await _userManager.GeUserById(recipe.AppUserId);
+        }
+
+        return recipe;
     }
 }

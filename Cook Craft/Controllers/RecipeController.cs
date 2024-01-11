@@ -57,7 +57,7 @@ namespace Cook_Craft.Controllers
                 Rating = recipeVM.Rating,
                 Steps = steps,
                 Ingridients = ingridients,
-                AppUserId = recipeVM.AppUserId
+                AppUserId = recipeVM.AppUserId,
             };
 
             _recipeRepository.Create(recipe);

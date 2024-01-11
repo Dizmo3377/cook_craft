@@ -19,6 +19,15 @@
         th {
             background-color: #f2f2f2;
         }
+
+        img {
+            max-width: 100px;
+            max-height: 100px;
+        }
+
+        .recipe-data {
+            font-size: 32px; /* Adjust the font-size as needed */
+        }
     </style>
 </head>
 <body>
@@ -29,6 +38,7 @@
                 <th>Image</th>
                 <th>Name</th>
                 <th>Description</th>
+                <th>Author</th> 
                 <th>Time</th>
             </tr>
         </thead>
@@ -42,13 +52,14 @@
                             asp-controller="Recipe"
                             asp-action="Show" 
                             asp-route-id="@recipe.Id" 
-                            class="btn btn-sm btn-outline-secondary">
-                            @recipe.Name
+                            class="btn btn-sm btn-outline-secondary recipe-data">
+                        @recipe.Name
                         </a>
                     </td>
-                    <td>@recipe.Description</td>
-                    @{var totalTime = recipe.CookTime + @recipe.PrepTime;}
-                    <td>@totalTime</td>
+                    <td class="recipe-data">@recipe.Description</td>
+                    @{ var totalTime = recipe.CookTime + @recipe.PrepTime; }
+                    <td class="recipe-data">@recipe.AppUser?.Email</td>
+                    <td class="recipe-data">@totalTime</td>
                 </tr>
             }
         </tbody>

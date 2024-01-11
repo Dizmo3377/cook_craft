@@ -3,29 +3,35 @@
     ViewData["Title"] = "Recipe Details";
 }
 
-<h1>@Model.Name</h1>
-<p>@Model.Description</p>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1 class="mb-4">@Model.Name</h1>
+            <p class="lead">@Model.Description</p>
 
-<!-- Displaying Recipe Image -->
-<img src="@Model.Image" alt="Recipe Image" style="max-width: 300px;"/>
+            <div class="text-md-right mb-4">
+                <img src="@Model.Image" alt="Recipe Image" class="img-fluid" style="max-width: 100%; max-height: 300px;" />
+            </div>
 
-<!-- Displaying Recipe Rating -->
-<p>Rating: @Model.Rating</p>
+            <div class="mb-4">
+                <h2 class="mb-3">Ingredients</h2>
+                <ul class="list-group">
+                    @foreach (var ingredient in Model.Ingridients)
+                    {
+                            <li class="list-group-item">@ingredient.Name</li>
+                    }
+                </ul>
+            </div>
 
-<h2>Ingredients</h2>
-<ul>
-    @foreach (var ingredient in Model.Ingridients)
-    {
-        <li>@ingredient.Name</li>
-        <!-- Display other properties of ingredient if needed -->
-    }
-</ul>
-
-<h2>Steps</h2>
-<ol>
-    @foreach (var step in Model.Steps)
-    {
-        <li>@step.Description</li>
-        <!-- Display other properties of step if needed -->
-    }
-</ol>
+            <div>
+                <h2 class="mb-3">Steps</h2>
+                <ol class="list-group">
+                    @foreach (var step in Model.Steps)
+                    {
+                            <li class="list-group-item">@step.Description</li>
+                    }
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
