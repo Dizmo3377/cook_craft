@@ -73,5 +73,17 @@ namespace Cook_Craft.Controllers
 
             return View(recipe);
         }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var recipe = await _recipeRepository.GetRecipeAsync(id);
+
+            if (recipe == null) return NotFound();
+
+            await _photoService.DeletePhotoAsync(recipe.Image);
+            _recipeRepository.Delete(recipe);
+
+            return RedirectToAction("Index", "Kitchen");
+        }
     }
 }

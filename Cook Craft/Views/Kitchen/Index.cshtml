@@ -1,6 +1,4 @@
-﻿@model ICollection<Recipe>
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <title>Kitchen</title>
@@ -26,7 +24,16 @@
         }
 
         .recipe-data {
-            font-size: 32px; /* Adjust the font-size as needed */
+            font-size: 16px; /* Adjust the font-size as needed */
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .action-button {
+            margin-right: 5px;
         }
     </style>
 </head>
@@ -40,6 +47,7 @@
                 <th>Description</th>
                 <th>Author</th> 
                 <th>Time</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -47,19 +55,18 @@
             {
                 <tr>
                     <td><img src="@recipe.Image" alt="Image"/></td>
-                    <td>
-                        <a 
-                            asp-controller="Recipe"
-                            asp-action="Show" 
-                            asp-route-id="@recipe.Id" 
-                            class="btn btn-sm btn-outline-secondary recipe-data">
-                        @recipe.Name
-                        </a>
-                    </td>
+                    <td class="recipe-data">@recipe.Name</td>
                     <td class="recipe-data">@recipe.Description</td>
                     @{ var totalTime = recipe.CookTime + @recipe.PrepTime; }
                     <td class="recipe-data">@recipe.AppUser?.Email</td>
                     <td class="recipe-data">@totalTime</td>
+                    <td class="recipe-data">
+                        <a href="@Url.Action("Show", "Recipe", new { id = recipe.Id })" class="btn btn-sm btn-info action-button">Details</a>
+                        <br>
+                        <a href="@Url.Action("Edit", "Recipe", new { id = recipe.Id })" class="btn btn-sm btn-warning action-button">Edit</a>
+                        <br>
+                        <a href="@Url.Action("Delete", "Recipe", new { id = recipe.Id })" class="btn btn-sm btn-danger action-button">Delete</a>
+                    </td>
                 </tr>
             }
         </tbody>

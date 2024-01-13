@@ -46,13 +46,7 @@ public class RecipeRepository : IRecipeRepository
         var recipe = await _context.Recipes
             .Include(r => r.Steps)
             .Include(r => r.Ingridients)
-            .Include(r => r.AppUser)
             .FirstOrDefaultAsync(r => r.Id == id);
-
-        if (recipe != null)
-        {
-            recipe.AppUser = await _userManager.GeUserById(recipe.AppUserId);
-        }
 
         return recipe;
     }
