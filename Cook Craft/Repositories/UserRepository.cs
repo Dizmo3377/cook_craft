@@ -8,10 +8,12 @@ namespace Cook_Craft.Repositories;
 public class UserRepository : IUserRepository
 {
     private readonly ApplicationDbContext _context;
+    private readonly IHttpContextAccessor _httpContext;
 
-    public UserRepository(ApplicationDbContext context)
+    public UserRepository(ApplicationDbContext context, IHttpContextAccessor httpContext)
     {
         _context = context;
+        _httpContext = httpContext;
     }
 
     public bool Add(AppUser user)
@@ -33,6 +35,13 @@ public class UserRepository : IUserRepository
     public async Task<AppUser> GeUserById(string id)
     {
         return await _context.Users.FindAsync(id);
+    }
+
+    public string GetUserIdFromContext()
+    {
+        var userName = _httpContext.HttpContext?.User.Identity.Name;
+        var user = _context.Users.FirstOrDefaultAsync(x => x.UserName == userName).Result;
+        return user.Id;
     }
 
     public bool Save()

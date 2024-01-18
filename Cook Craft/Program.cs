@@ -4,8 +4,11 @@ using Cook_Craft.Interfaces;
 using Cook_Craft.Models;
 using Cook_Craft.Repositories;
 using Cook_Craft.Services;
+using Cook_Craft.Helpers;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +19,7 @@ builder.Services.AddScoped<IPhotoService, PhotoService>();
 builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
 builder.Services.AddScoped<IKitchenRepository, KitchenRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddAutoMapper(typeof(MappingProfiles));
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

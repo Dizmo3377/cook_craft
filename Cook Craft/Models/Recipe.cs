@@ -14,7 +14,7 @@ public class Recipe
     public ICollection<Step> Steps { get; set; }
     public ICollection<Ingridient> Ingridients { get; set; }
 
-    [ForeignKey("AppUserId")]
+    [ForeignKey("AppUser")]
     public string AppUserId { get; set; }
     public virtual AppUser AppUser { get; set; }
 }

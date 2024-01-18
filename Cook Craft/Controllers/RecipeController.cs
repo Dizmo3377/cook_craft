@@ -4,7 +4,10 @@ using Cook_Craft.Services;
 using Cook_Craft.View_Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Web;
 using Cook_Craft.Extensions;
+using AutoMapper;
+using Cook_Craft.Data;
 
 namespace Cook_Craft.Controllers
 {
@@ -12,21 +15,24 @@ namespace Cook_Craft.Controllers
     {
         private readonly IRecipeRepository _recipeRepository;
         private readonly IPhotoService _photoService;
-        private readonly IHttpContextAccessor _httpContext;
+        private readonly IMapper _mapper;
+        private readonly IUserRepository _userRepository;
 
         public RecipeController(IRecipeRepository recipeRepository,
                                 IPhotoService photoService,
-                                IHttpContextAccessor httpContext)
+                                IMapper mapper,
+                                IUserRepository userRepository)
         {
             _recipeRepository = recipeRepository;
             _photoService = photoService;
-            _httpContext = httpContext;
+            _mapper = mapper;
+            _userRepository = userRepository;
         }
 
         //Get
         public IActionResult Index()
         {
-            var userIdFromContext = _httpContext.HttpContext?.User.GetUserId();
+            var userIdFromContext = _userRepository.GetUserIdFromContext();
             var recipeViewModel = new CreateRecipeViewModel { AppUserId = userIdFromContext};
             return View(recipeViewModel);
         }
@@ -39,29 +45,11 @@ namespace Cook_Craft.Controllers
 
             var result = await _photoService.AddPhotoAsync(recipeVM.Image);
 
-            var steps = recipeVM.Steps
-                .Select(step => new Step { Description = step })
-                .ToList();
-
-            var ingridients = recipeVM.Ingridients
-                .Select(ingredient => new Ingridient { Name = ingredient })
-                .ToList();
-
-            var recipe = new Recipe
-            {
-                Name = recipeVM.Name,
-                Description = recipeVM.Description,
-                PrepTime = recipeVM.PrepTime,
-                CookTime = recipeVM.CookTime,
-                Image = result.Url.ToString(),
-                Rating = recipeVM.Rating,
-                Steps = steps,
-                Ingridients = ingridients,
-                AppUserId = recipeVM.AppUserId,
-            };
+            var recipe = _mapper.Map<Recipe>(recipeVM);
+            recipe.Image = result.Url.ToString();
 
             _recipeRepository.Create(recipe);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Kitchen");
         }
 
         [HttpGet]
@@ -81,27 +69,7 @@ namespace Cook_Craft.Controllers
 
             if (recipe == null) return NotFound();
 
-            var steps = recipe.Steps
-                .Select(step => step.Description)
-                .ToList();
-
-            var ingridients = recipe.Ingridients
-                .Select(ingredient => ingredient.Name)
-                .ToList();
-
-            var recipeViewModel = new EditRecipeViewModel
-            {
-                Id = recipe.Id,
-                Name = recipe.Name,
-                Description = recipe.Description,
-                PrepTime = recipe.PrepTime,
-                CookTime = recipe.CookTime,
-                URL = recipe.Image,
-                Rating = recipe.Rating,
-                Steps = steps,
-                Ingridients = ingridients,
-                AppUserId = recipe.AppUserId
-            };
+            var recipeViewModel = _mapper.Map<EditRecipeViewModel>(recipe);
 
             return View(recipeViewModel);
         }
@@ -119,6 +87,7 @@ namespace Cook_Craft.Controllers
 
             if (recipeVM.Image != null)
             {
+                await _photoService.DeletePhotoAsync(recipeVM.URL);
                 var photo = await _photoService.AddPhotoAsync(recipeVM.Image);
                 photoResult = photo.Url.ToString();
                 recipeVM.URL = photoResult;
@@ -128,27 +97,8 @@ namespace Cook_Craft.Controllers
                 photoResult = recipeVM.URL;
             }
 
-            var steps = recipeVM.Steps
-                .Select(step => new Step { Description = step })
-                .ToList();
-
-            var ingridients = recipeVM.Ingridients
-                .Select(ingredient => new Ingridient { Name = ingredient })
-                .ToList();
-
-            var recipe = new Recipe
-            {
-                Id = recipeVM.Id,
-                Name = recipeVM.Name,
-                Description = recipeVM.Description,
-                PrepTime = recipeVM.PrepTime,
-                CookTime = recipeVM.CookTime,
-                Image = photoResult,
-                Rating = recipeVM.Rating,
-                Steps = steps,
-                Ingridients = ingridients,
-                AppUserId = recipeVM.AppUserId
-            };
+            var recipe = _mapper.Map<Recipe>(recipeVM);
+            recipe.Image = photoResult;
 
             _recipeRepository.Update(recipe);
 

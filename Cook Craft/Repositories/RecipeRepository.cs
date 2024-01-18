@@ -31,7 +31,23 @@ public class RecipeRepository : IRecipeRepository
 
     public bool Update(Recipe recipe)
     {
-        _context.Recipes.Update(recipe);
+        var trackedRecipe = _context.Recipes.Attach(recipe);
+
+        _context.Entry(trackedRecipe.Entity).State = EntityState.Modified;
+
+        trackedRecipe.Entity.Steps.Clear();
+        trackedRecipe.Entity.Ingridients.Clear();
+
+        foreach (var step in recipe.Steps)
+        {
+            trackedRecipe.Entity.Steps.Add(new Step { Description = step.Description });
+        }
+
+        foreach (var ingredient in recipe.Ingridients)
+        {
+            trackedRecipe.Entity.Ingridients.Add(new Ingridient { Name = ingredient.Name });
+        }
+
         return Save();
     }
 
