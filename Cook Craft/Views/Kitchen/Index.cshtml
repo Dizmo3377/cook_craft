@@ -1,51 +1,79 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Kitchen</title>
+    <title>Recipes</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" integrity="sha384-rG9/Zml8Cgg1Nn5qDE2R/1CkU+3CccxdQcCOyAj8gUmbDHPoFT6TRv5KuSSd7dGd" crossorigin="anonymous">
     <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fff; /* White background */
+            margin: 20px;
+        }
+
+        h1 {
+            color: #343a40;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
         table {
             border-collapse: collapse;
             width: 100%;
+            margin-top: 20px;
         }
 
         th, td {
-            border: 1px solid #dddddd;
+            border: 1px solid #dee2e6;
+            padding: 12px;
             text-align: left;
-            padding: 8px;
         }
 
         th {
-            background-color: #f2f2f2;
+            background-color: #f8f9fa; /* Light gray background for table headings */
+            color: #343a40;
         }
 
         img {
-            max-width: 100px;
-            max-height: 100px;
+            max-width: 80px;
+            max-height: 80px;
+            border-radius: 5px;
         }
 
         .recipe-data {
-            font-size: 16px; /* Adjust the font-size as needed */
+            font-size: 16px;
+            color: #343a40;
         }
 
         .action-buttons {
             display: flex;
-            justify-content: space-between;
+            gap: 5px;
         }
 
         .action-button {
-            margin-right: 5px;
+            padding: 6px 12px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            color: #fff;
+            background-color: #007bff;
+            transition: background-color 0.3s;
+            display: inline-block;
+        }
+
+        .action-button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <h1>Download Logs</h1>
-    <table>
+    <h1>Recipes</h1>
+    <table class="table">
         <thead>
             <tr>
                 <th>Image</th>
                 <th>Name</th>
                 <th>Description</th>
-                <th>Author</th> 
+                <th>Author</th>
                 <th>Time</th>
                 <th>Actions</th>
             </tr>
@@ -61,15 +89,22 @@
                     <td class="recipe-data">@recipe.AppUser?.Email</td>
                     <td class="recipe-data">@totalTime</td>
                     <td class="recipe-data">
-                        <a href="@Url.Action("Show", "Recipe", new { id = recipe.Id })" class="btn btn-sm btn-info action-button">Details</a>
-                        <br>
-                        <a href="@Url.Action("Edit", "Recipe", new { id = recipe.Id })" class="btn btn-sm btn-warning action-button">Edit</a>
-                        <br>
-                        <a href="@Url.Action("Delete", "Recipe", new { id = recipe.Id })" class="btn btn-sm btn-danger action-button">Delete</a>
+                        <div class="action-buttons">
+                            <a href="@Url.Action("Show", "Recipe", new { id = recipe.Id })" class="action-button">
+                                <i class="bi bi-info-square"></i> Details
+                            </a>
+                            <a href="@Url.Action("Edit", "Recipe", new { id = recipe.Id })" class="action-button">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a>
+                            <a href="@Url.Action("Delete", "Recipe", new { id = recipe.Id })" class="action-button">
+                                <i class="bi bi-trash-fill"></i> Delete
+                            </a>
+                        </div>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-bOMk6HrM6ZlxcZl58QTM1VwxT3jFd+17Svcus4jj5b6EGGo2lf71SmL5ZNKK9eQd" crossorigin="anonymous"></script>
 </body>
 </html>
