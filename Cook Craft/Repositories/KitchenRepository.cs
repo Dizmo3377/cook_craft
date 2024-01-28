@@ -1,5 +1,6 @@
 ﻿using Cook_Craft.Data;
 using Cook_Craft.Interfaces;
+using Cook_Craft.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
 
@@ -14,7 +15,7 @@ public class KitchenRepository : IKitchenRepository
         _context = context;
     }
 
-    public ICollection GetAllRecipes()
+    public ICollection<Recipe> GetAllRecipes()
     {
         return _context.Recipes.Include(r => r.AppUser).ToList();
     }

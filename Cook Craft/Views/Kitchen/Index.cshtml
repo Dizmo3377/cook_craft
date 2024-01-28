@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@model ICollection<Recipe>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Recipes</title>
@@ -74,7 +76,25 @@
                 <th>Name</th>
                 <th>Description</th>
                 <th>Author</th>
-                <th>Time</th>
+                <th>
+                    @{
+                        string newSorting = "asc";
+                        string currentSorting = Context.Request.Query["sorting"];
+
+                        switch (currentSorting)
+                        {
+                            case "asc":
+                                newSorting = "desc";
+                                break;
+                            case "desc":
+                                newSorting = "asc";
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    <a asp-action="Index" asp-route-sorting="@newSorting">Time</a>
+                </th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -85,7 +105,8 @@
                     <td><img src="@recipe.Image" alt="Image"/></td>
                     <td class="recipe-data">@recipe.Name</td>
                     <td class="recipe-data">@recipe.Description</td>
-                    @{ var totalTime = recipe.CookTime + @recipe.PrepTime; }
+                    @* I Changed it to just CookTime *@
+                    @{ var totalTime = recipe.CookTime; }
                     <td class="recipe-data">@recipe.AppUser?.Email</td>
                     <td class="recipe-data">@totalTime</td>
                     <td class="recipe-data">

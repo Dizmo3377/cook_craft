@@ -14,6 +14,12 @@
             </div>
 
             <div class="mb-4">
+                <h2 class="mb-3">Time</h2>
+                <p><strong>Preparation Time:</strong> @Model.PrepTime minutes</p>
+                <p><strong>Cooking Time:</strong> @Model.CookTime minutes</p>
+            </div>
+
+            <div class="mb-4">
                 <h2 class="mb-3">Ingredients</h2>
                 <ul class="list-group">
                     @foreach (var ingredient in Model.Ingridients)
@@ -23,7 +29,7 @@
                 </ul>
             </div>
 
-            <div>
+            <div class="mb-4">
                 <h2 class="mb-3">Steps</h2>
                 <ol class="list-group">
                     @foreach (var step in Model.Steps)
@@ -32,6 +38,7 @@
                     }
                 </ol>
             </div>
+
         </div>
     </div>
 </div>
